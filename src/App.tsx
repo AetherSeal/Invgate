@@ -1,19 +1,10 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import Header from "./components/header";
-import Footer from "./components/footer";
-import Window from "./components/window/window";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
+
+const router = createRouter({ routeTree });
 
 function App() {
-  return (
-    <>
-      <Header></Header>
-      <Window></Window>
-      <Footer></Footer>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
