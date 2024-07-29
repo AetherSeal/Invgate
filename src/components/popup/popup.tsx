@@ -1,8 +1,9 @@
-import { useGeneralContext, usePopupContext } from "../../hooks/hooks";
+import { usePopupStore } from "../../store/popupStore";
+import { useTodoStore } from "../../store/todoStore";
 
 export default function Popup() {
-  const { handleDeleteTodo } = useGeneralContext();
-  const { isOpen, message, setIsOpen, currentId } = usePopupContext();
+  const deleteTodo = useTodoStore((state) => state.deleteTodo);
+  const { message, isOpen, currentTodoId, toggleIsOpen } = usePopupStore();
 
   const renderPopup = () => {
     if (!isOpen) {
@@ -17,9 +18,11 @@ export default function Popup() {
           <div className="flex justify-center pt-6">
             <button
               onClick={() => {
-                if (!currentId) return;
-                handleDeleteTodo(currentId);
-                setIsOpen(false);
+                if (!currentTodoId) {
+                  return;
+                }
+                deleteTodo(currentTodoId);
+                toggleIsOpen();
               }}
               className={`bg-sky-500 hover:bg-sky-700 px-5 py-2.5 text-sm leading-5 rounded-md font-semibold text-white`}
             >
@@ -28,7 +31,7 @@ export default function Popup() {
             <button
               className="absolute top-2 right-2"
               onClick={() => {
-                setIsOpen(false);
+                toggleIsOpen();
               }}
             >
               ❌

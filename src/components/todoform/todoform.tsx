@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { uniqueID } from "../../utils/helpers";
 import { MAX_CHAR } from "../../utils/constants";
-import { useGeneralContext } from "../../hooks/hooks";
+import { useTodoStore } from "../../store/todoStore";
 
 export default function TodoForm() {
-  const { handleAddTodo } = useGeneralContext();
   const [title, setTitle] = useState("");
+
+  const addTodo = useTodoStore((state) => state.addTodo);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -15,7 +16,7 @@ export default function TodoForm() {
       title: title,
       completed: false,
     };
-    handleAddTodo(newTodo);
+    addTodo(newTodo);
   };
 
   const handleTitle = (event: React.ChangeEvent<HTMLInputElement>) => {

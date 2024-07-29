@@ -1,14 +1,15 @@
-import { useGeneralContext, usePopupContext } from "../../hooks/hooks";
+import { usePopupStore } from "../../store/popupStore";
+import { useTodoStore } from "../../store/todoStore";
 import { TTodoItem } from "../../types/general";
 type TTodoItemProps = {
   item: TTodoItem;
 };
 export default function TodoItem({ item }: TTodoItemProps) {
-  const { handleCheckTodo } = useGeneralContext();
-  const { setIsOpen, setMessage, handleCurrentId } = usePopupContext();
+  const checkTodo = useTodoStore((state) => state.checkTodo);
+  const { toggleIsOpen, changeMessage, changeCurrentTodoId } = usePopupStore();
 
   const onCheck = () => {
-    handleCheckTodo(item.id);
+    checkTodo(item.id);
   };
 
   return (
@@ -33,11 +34,11 @@ export default function TodoItem({ item }: TTodoItemProps) {
         <button
           className="hover:bg-red-50 hover:text-red-500 peer-has-[:checked]:hidden"
           onClick={() => {
-            setIsOpen(true);
-            setMessage(
+            toggleIsOpen();
+            changeCurrentTodoId(item.id);
+            changeMessage(
               `Are you sure you want to delete this item? [${item.title}]`
             );
-            handleCurrentId(item.id);
           }}
         >
           ❌
